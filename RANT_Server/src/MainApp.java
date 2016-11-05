@@ -6,11 +6,8 @@ public class MainApp extends PApplet {
 
 	@Override
 	public void setup() {
-		size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		server = new Server(this);
-	}
-	@Override
-	public void draw() {
+		server.start();
 	}
 
 }

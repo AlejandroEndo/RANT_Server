@@ -10,19 +10,17 @@ import processing.core.PApplet;
 public class Server extends Thread implements Observer {
 
 	private ServerSocket ss;
-
+	private ArrayList<ControlCliente> clientes;
 	private ControlXMLUsuarios cxmlUsuarios;
 	private ControlXMLMensajes cxmlMensajes;
-
-	private ArrayList<ControlCliente> clientes;
 
 	public Server(PApplet app) {
 		cxmlUsuarios = new ControlXMLUsuarios(app);
 		cxmlMensajes = new ControlXMLMensajes(app);
 		clientes = new ArrayList<ControlCliente>();
 		try {
-			ss = new ServerSocket(5000);
-			System.out.println("[ SERVIDOR INICIADO EN: " + ss.toString() + " ]");
+			ss = new ServerSocket(5001);
+			System.out.println("[ SERVIDOR INICIADO EN: "+ss.toString()+" ]");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

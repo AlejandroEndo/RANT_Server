@@ -15,6 +15,7 @@ public class ControlCliente extends Observable implements Runnable {
 	public ControlCliente(Socket s, Observer jefe) {
 		this.s = s;
 		this.jefe = jefe;
+		disponible = true;
 		Thread t = new Thread(this);
 		t.start();
 	}
