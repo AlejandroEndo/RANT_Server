@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mensajes>
   <mensaje usuario="NA">hola</mensaje>
+  <mensaje usuario="NA"/>
+  <mensaje usuario="NA">a</mensaje>
 </mensajes>

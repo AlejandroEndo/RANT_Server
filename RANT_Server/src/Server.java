@@ -20,7 +20,7 @@ public class Server extends Thread implements Observer {
 		clientes = new ArrayList<ControlCliente>();
 		try {
 			ss = new ServerSocket(5001);
-			System.out.println("[ SERVIDOR INICIADO EN: "+ss.toString()+" ]");
+			System.out.println("SERVIDOR INICIADO EN: " + ss.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -30,10 +30,10 @@ public class Server extends Thread implements Observer {
 	public void run() {
 		while (true) {
 			try {
-				System.out.println("[ ESPERANDO CLIENTE ]");
+				System.out.println("ESPERANDO CLIENTE...");
 				clientes.add(new ControlCliente(ss.accept(), this));
-				System.out.println("[ NUEVO CLIENTE ES: " + clientes.get(clientes.size()-1).toString() + " ]");
-				System.out.println("[ CANTIDAD DE CLIENTES: " + clientes.size() + " ]");
+				System.out.println("NUEVO CLIENTE ES: " + clientes.get(clientes.size() - 1).toString());
+				System.out.println("CANTIDAD DE CLIENTES: " + clientes.size());
 				sleep(100);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -47,29 +47,27 @@ public class Server extends Thread implements Observer {
 	public void update(Observable observado, Object mensajeString) {
 		String notificacion = (String) mensajeString;
 		if (notificacion.contains("login_req:")) {
-			String[] partes = notificacion.split(":");			
+			String[] partes = notificacion.split(":");
 			int resultadoLogin = cxmlUsuarios.validarUsuario(partes[1], partes[2]);
-			((ControlCliente)observado).enviarMensaje("login_resp:"+resultadoLogin);			
+			((ControlCliente) observado).enviarMensaje("login_resp:" + resultadoLogin);
 		}
 		if (notificacion.contains("signup_req:")) {
-			String[] partes = notificacion.split(":");			
-			boolean resultadoAgregar = cxmlUsuarios.agregarUsuario(partes[1], partes[2]);			
-			((ControlCliente)observado).enviarMensaje("signup_resp:"+(resultadoAgregar==true?1:0));			
+			String[] partes = notificacion.split(":");
+			boolean resultadoAgregar = cxmlUsuarios.agregarUsuario(partes[1], partes[2]);
+			((ControlCliente) observado).enviarMensaje("signup_resp:" + (resultadoAgregar == true ? 1 : 0));
 		}
 		if (notificacion.contains("cliente_no_disponible")) {
 			clientes.remove(observado);
-			System.out.println("[ SE HA IDO UN CLIENTE, QUEDAN: " + clientes.size()+ " ]");
+			System.out.println("[ SE HA IDO UN CLIENTE, QUEDAN: " + clientes.size() + " ]");
 		}
 		//
-		if (notificacion.contains("mensaje_send:")) {			
+		if (notificacion.contains("mensaje_send:")) {
 			for (Iterator<ControlCliente> iterator = clientes.iterator(); iterator.hasNext();) {
 				ControlCliente controlCliente = iterator.next();
 				controlCliente.enviarMensaje(notificacion);
 				String[] partes = notificacion.split(":");
 				cxmlMensajes.agregarMensaje("NA", partes[1]);
 			}
-			
-			//System.out.println("[ SE HA IDO UN CLIENTE, QUEDAN: " + clientes.size()+ " ]");
 		}
 	}
 }
